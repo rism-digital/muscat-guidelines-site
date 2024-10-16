@@ -3,7 +3,7 @@ wg_title:
 email: contact@rism.info
 description: >- # this means to ignore newlines
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://rism.info" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://guidelines.rism.info" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: RISM_Music
 twitter:
   card: summary
@@ -43,5 +43,5 @@ sass:
 
 theme: rism-theme
 
-src_link: https://github.com/rism-digital/rism.info/tree/staging
+src_link: https://github.com/rism-digital/muscat-guielines-site/tree/staging
 
