@@ -30,8 +30,6 @@ sponsors:
     logo: logo_ims.png
   - url: https://www.iaml.info/
     logo: logo_iaml.png
-  - url: http://www.adwmainz.de/
-    logo: logo_akademie.png
 
 languages: ["en", "de", "fr"]
 default_lang: "en"
