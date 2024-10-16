@@ -232,17 +232,17 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # Ensure the output directory exists
     Dir.mkdir(@output_dir) unless Dir.exist?(@output_dir)
 
-    configfile = "#{site.config['guidelines_dir']}/default/guidelines-jk.yml"
+    configfile = "#{site.config['guidelines_dir']}/default/guidelines.yml"
     @tree = YAML.safe_load(File.read(configfile), symbolize_names: true)
 
     # First pass - generate the navigation map
-    @tree[:doc][:chapters].each do |chap| 
+    @tree[:chapters].each do |chap| 
         generate_navigation(chap)
     end
 
     # Second pass - reset the chapter counter and generate the content and navigation files
     @chapterNb = 1
-    @tree[:doc][:chapters].each do |chap| 
+    @tree[:chapters].each do |chap| 
         generate_chapter(chap)
     end
 
