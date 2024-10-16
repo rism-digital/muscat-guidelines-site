@@ -77,7 +77,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
         @chapter = @content[id]
  
         @languages.each do |lang|
-            # @chapter[lang] += "# #{@chapterNb} – #{title}\n"
+            @chapter[lang] += "# #{@sidebar[:name][lang]}\n"
             if chap[:helpfile]
                 @chapter[lang] += File.read("#{@guidelines}/#{lang}/#{chap[:helpfile]}.md")
             end
