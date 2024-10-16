@@ -1,0 +1,23 @@
+- name:
+    en: "Home"
+    de: "Startseite"
+    fr: "Accueil"
+  link: /index.html
+- name:
+    en: "Muscat"
+    de: "Muscat"
+    fr: "Muscat"
+  link: https://muscat.rism.info
+  blank: true
+- name:
+    en: "RISM Editorial Center"
+    de: "RISM Zentralredaktion"
+    fr: "RISM Editorial Center"
+  link: https://rism.info
+  blank: true
+- name:
+    en: "RISM Digital Center"
+    de: "RISM Digital Center"
+    fr: "RISM Digital Center"
+  link: https://rism.digital
+  blank: true

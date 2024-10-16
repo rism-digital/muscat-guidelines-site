@@ -1,0 +1,9 @@
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+.ruby-version
+_includes/common
+_data/*.yml
+!_data/navigation.yml
+output
