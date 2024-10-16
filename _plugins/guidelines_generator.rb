@@ -16,8 +16,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
 
     ################################
     # Function to retrieve a translation for a key with a specific model (nil == "source")
-    def get_translated_label( key, model)
-        label = "[unspecified]"
+    def get_muscat_translation(key, model)
+        label = "unspecified"
         case model
             when nil 
                 label = I18n.t(@source_config[key.to_sym][:label]) rescue "missing label in source"
@@ -32,6 +32,13 @@ Jekyll::Hooks.register :site, :after_init do |site|
     end
 
     ################################
+    # Function to retrieve a translation for a key in the guidelines specific translations
+    def get_guidelines_translation(key)
+        label = I18n.t(("guidelines." + key).to_sym) rescue "missing label in guidelines"
+        label
+    end
+
+    ################################
     # Function for generating the navigation map
     # Takes a chapter entry from the guidelines.yml and add a navigation hash to @navigation
     def generate_navigation chap
@@ -42,8 +49,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
         # A hash for the content by language
         content = Hash.new
         @languages.each do |lang|
-            # This will need to be translated from the guidelines locale
-            title = id
+            title = get_guidelines_translation(id)
             navigation[:name][lang] = "#{@chapterNb} – #{title}"
             content[lang] = format(@header, title, lang, id, id)
         end
@@ -103,8 +109,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # Rely on the current @chapter and @sidebar
     def generate_section sec
         id = sec[:guidelines_title]
-        # This will need to be translated from the guidelines locale
-        title = id
+        title = get_guidelines_translation(id)
 
         # A hash for the section navigation
         navigation = Hash.new
@@ -141,11 +146,11 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # Function for adding the content of the subsection to the chapter content .md
     # Rely on the current @chapter
     def generate_subsection(subsec, model)
+        title = "[unspecified]"
         if subsec[:title]
-            title = get_translated_label(subsec[:title], model)
-        else
-            # This will need to be translated from the guidelines locale
-            title = subsec[:guidelines_title]
+            title = get_muscat_translation(subsec[:title], model)
+        elsif subsec[:guidelines_title]
+            title = get_guidelines_translation(subsec[:guidelines_title])
         end
 
         @languages.each do |lang|
@@ -166,6 +171,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
     @guidelines = "#{site.config['guidelines_dir']}/default"
     # Where to find the guidelines *.md files in the muscat-guidelines repository to be copied to _includes
     @guidelines_include = "#{site.config['guidelines_dir']}/common"
+    # Where to find the guidelines locales *.yml files in the muscat-guidelines repository
+    @guidelines_locales = "#{site.config['guidelines_dir']}/locales"
 
     # Where to find the translation files from the translations repository
     @translations = "#{site.config['translations_dir']}/locales"
@@ -181,6 +188,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
 
     # Load all the translations
     I18n.load_path += Dir[File.expand_path("#{@translations}/*.yml")]
+    I18n.load_path += Dir[File.expand_path("#{@guidelines_locales}/*.yml")]
     I18n.default_locale = :en
 
     # The languages selected for the guidelines as set in _config.yml
@@ -212,7 +220,10 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # Store a global hash with all the chapter navigation
     @navigation = Hash.new
     # This will need to be translated from the guidelines locale
-    @navigation[:label] = { en: "Content", de: "Inhalt", fr: "Contenu" }
+    @navigation[:label] = Hash.new
+    @languages.each do |lang|
+        @navigation[:label][lang] = get_guidelines_translation("content")
+    end
     @navigation[:items] = Array.new
 
     # Store a global hash with all the content
