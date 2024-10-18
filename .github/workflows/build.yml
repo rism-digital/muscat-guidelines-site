@@ -17,6 +17,7 @@ env:
   MUSCAT_GUIDELINES_PATH: 'muscat-guidelines'
   MUSCAT_PATH: 'muscat'
   TRANSLATIONS_PATH: 'translations'
+  BUILD_PATH: 'build'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -48,7 +49,11 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      - name: Configure staging build
+        with:
+            path: ${{ env.MUSCAT_PATH }}
+      
+      - name:
+        working-directory: ${{ env.BUILD_PATH }}
         run: sed -i 's/https:\/\/guidelines\.rism\.info/https:\/\/guidelines-stage\.rism\.info/g' _config.yml
         if: endsWith(github.ref, '/staging')
 
@@ -62,3 +67,4 @@ jobs:
 
       # Tune the jekyll action
       - uses:  lemonarc/jekyll-action@1.0.0
+        working_dir: ${{ env.BUILD_PATH }}
