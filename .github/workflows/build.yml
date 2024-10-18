@@ -5,6 +5,8 @@ name: Jekyll build
 on:
   pull_request:
     branches: [ main, staging ]
+  push:
+    branches: [ main, staging ]
 
 # globals
 env:
