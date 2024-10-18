@@ -65,7 +65,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-v3
 
-      # Tune the jekyll action
-      - uses:  lemonarc/jekyll-action@1.0.0
-        with:
-          build_dir: ${{ env.BUILD_PATH }}
+      - name: "Build the site
+        working-directory: ${{ env.BUILD_PATH }}
+        run: |
+          bundle config path vendor/bundle
+          bundle install
+          bundle exec jekyll build
