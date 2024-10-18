@@ -235,22 +235,25 @@ Jekyll::Hooks.register :site, :after_init do |site|
     configfile = "#{site.config['guidelines_dir']}/default/guidelines.yml"
     @tree = YAML.safe_load(File.read(configfile), symbolize_names: true)
 
+    
+    Jekyll.logger.info "GuidelinesGenerator:", "Parsing #{configfile} to build that navigation map"
     # First pass - generate the navigation map
     @tree[:chapters].each do |chap| 
         generate_navigation(chap)
     end
 
+    Jekyll.logger.info "GuidelinesGenerator:", "Parsing #{configfile} to aggregate chapter content"
     # Second pass - reset the chapter counter and generate the content and navigation files
     @chapterNb = 1
     @tree[:chapters].each do |chap| 
         generate_chapter(chap)
     end
 
+    Jekyll.logger.info "GuidelinesGenerator:", "Copying #{@guidelines_include} files to '_includes' as .html"
     # _includes dir of the site
     include_dir = File.join(site.source, "_includes/common") # Destination _includes folder
     # Make sure the target directory exists
     Dir.mkdir(include_dir) unless Dir.exists?(include_dir)
-    
     # Copy each file from ./common in the guidelines to _includes
     # Also change .md to .html because otherwise jekyll expects a .xx.md include with the corresponding language
     Dir.glob("#{@guidelines_include}/*").each do |file|
@@ -258,7 +261,6 @@ Jekyll::Hooks.register :site, :after_init do |site|
         basename = File.basename(file, ".md") # Get the base name (without .md)
         htmlFilename = "#{basename}.html"   # Append .html to the base name
         FileUtils.mv(File.join(include_dir, File.basename(file)), File.join(include_dir, htmlFilename))
-        Jekyll.logger.info "Copying:", "Copied #{file} to #{include_dir} as .html"
     end
 
     # Log message to indicate the pre-build hook was triggered
