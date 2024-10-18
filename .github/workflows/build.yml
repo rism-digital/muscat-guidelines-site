@@ -43,6 +43,9 @@ jobs:
           repository: ${{ env.TRANSLATIONS_REPO }}
           path: ${{ env.TRANSLATIONS_PATH }}
 
+      - run: pwd |
+          ls
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       - name: Configure staging build
