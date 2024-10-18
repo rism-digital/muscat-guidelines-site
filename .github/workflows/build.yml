@@ -68,6 +68,8 @@ jobs:
       - name: "Build the site"
         working-directory: ${{ env.BUILD_PATH }}
         run: |
+          pwd
+          ls
           bundle config path vendor/bundle
           bundle install
           bundle exec jekyll build
