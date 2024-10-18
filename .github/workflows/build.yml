@@ -67,4 +67,4 @@ jobs:
 
       # Tune the jekyll action
       - uses:  lemonarc/jekyll-action@1.0.0
-        working_dir: ${{ env.BUILD_PATH }}
+        working-directory: ${{ env.BUILD_PATH }}
