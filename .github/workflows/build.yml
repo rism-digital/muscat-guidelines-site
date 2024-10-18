@@ -63,7 +63,7 @@ jobs:
       # Use GitHub Actions' cache to shorten build times and decrease load on servers
       - uses: actions/cache@v3
         with:
-          path: vendor/bundle
+          path: ${{ env.BUILD_PATH }}/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v3
           restore-keys: |
             ${{ runner.os }}-gems-v3
