@@ -29,20 +29,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      - name: Configure staging build
-        run: sed -i 's/https:\/\/guidelines\.rism\.info/https:\/\/guidelines-stage\.rism\.info/g' _config.yml
-        if: endsWith(github.ref, '/staging')
-
-      # Use GitHub Actions' cache to shorten build times and decrease load on servers
-      - uses: actions/cache@v3
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v3
-          restore-keys: |
-            ${{ runner.os }}-gems-v3-
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
         with:
           repository: ${{ env.MUSCAT_GUIDELINES_REPO }}
           path: ${{ env.MUSCAT_GUIDELINES_PATH }}
@@ -56,6 +42,20 @@ jobs:
         with:
           repository: ${{ env.TRANSLATIONS_REPO }}
           path: ${{ env.TRANSLATIONS_PATH }}
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      - name: Configure staging build
+        run: sed -i 's/https:\/\/guidelines\.rism\.info/https:\/\/guidelines-stage\.rism\.info/g' _config.yml
+        if: endsWith(github.ref, '/staging')
+
+      # Use GitHub Actions' cache to shorten build times and decrease load on servers
+      - uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v3
+          restore-keys: |
+            ${{ runner.os }}-gems-v3-
 
       # Tune the jekyll action
       - uses:  lemonarc/jekyll-action@1.0.0
