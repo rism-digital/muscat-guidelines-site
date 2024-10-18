@@ -1,0 +1,59 @@
+name: Jekyll build
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main and staging branches
+on:
+  pull_request:
+    branches: [ main, staging ]
+
+# globals
+env:
+  MUSCAT_GUIDELINES_REPO: https://github.com/rism-digital/muscat-guidelines
+  MUSCAT_REPO: https://github.com/rism-digital/muscat
+  TRANSLATIONS_REPO: https://github.com/rism-digital/translations
+
+  MUSCAT_GUIDELINES_PATH: ./muscat-guidelines
+  MUSCAT_PATH: ./muscat
+  TRANSLATIONS_PATH: ./translations
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      - name: Configure staging build
+        run: sed -i 's/https:\/\/guidelines\.rism\.info/https:\/\/guidelines-stage\.rism\.info/g' _config.yml
+        if: endsWith(github.ref, '/staging')
+
+      # Use GitHub Actions' cache to shorten build times and decrease load on servers
+      - uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v2
+          restore-keys: |
+            ${{ runner.os }}-gems-v2-
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.MUSCAT_GUIDELINES_REPO }}
+          path: ${{ env.MUSCAT_GUIDELINES_PATH }}
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.MUSCAT_REPO }}
+          path: ${{ env.MUSCAT_PATH }}
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.TRANSLATIONS_REPO }}
+          path: ${{ env.TRANSLATIONS_PATH }}
+
+      # Tune the jekyll action
+      - uses:  lemonarc/jekyll-action@1.0.0
