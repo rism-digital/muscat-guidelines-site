@@ -35,7 +35,6 @@ jobs:
 
       # Use GitHub Actions' cache to shorten build times and decrease load on servers
       - uses: actions/cache@v3
-      - name: Install gems using cache
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v2
@@ -44,19 +43,16 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      - name: Checkout guidelines
         with:
           repository: ${{ env.MUSCAT_GUIDELINES_REPO }}
           path: ${{ env.MUSCAT_GUIDELINES_PATH }}
 
       - uses: actions/checkout@v4
-      - name: Checkout muscat
         with:
           repository: ${{ env.MUSCAT_REPO }}
           path: ${{ env.MUSCAT_PATH }}
 
       - uses: actions/checkout@v4
-      - name: Checkout translations
         with:
           repository: ${{ env.TRANSLATIONS_REPO }}
           path: ${{ env.TRANSLATIONS_PATH }}
