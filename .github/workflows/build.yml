@@ -39,7 +39,7 @@ jobs:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v3
           restore-keys: |
-            ${{ runner.os }}-gems-v3-
+            ${{ runner.os }}-gems-v3
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
