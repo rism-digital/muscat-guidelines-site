@@ -65,7 +65,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-v3
 
-      - name: "Build the site
+      - name: "Build the site"
         working-directory: ${{ env.BUILD_PATH }}
         run: |
           bundle config path vendor/bundle
