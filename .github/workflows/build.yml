@@ -34,7 +34,7 @@ jobs:
         with:
           ruby-version: '3.1'
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out external repositories
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.MUSCAT_GUIDELINES_REPO }}
@@ -50,10 +50,7 @@ jobs:
           repository: ${{ env.TRANSLATIONS_REPO }}
           path: ${{ env.TRANSLATIONS_PATH }}
 
-      - run: pwd |
-          ls
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out your repository under $BUILD_PATH
       - uses: actions/checkout@v4
         with:
             path: ${{ env.BUILD_PATH }}
@@ -74,8 +71,6 @@ jobs:
       - name: "Build the site"
         working-directory: ${{ env.BUILD_PATH }}
         run: |
-          pwd
-          ls
           bundle config path vendor/bundle
           bundle install
           bundle exec jekyll build
