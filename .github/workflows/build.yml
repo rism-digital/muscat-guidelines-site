@@ -14,9 +14,9 @@ env:
   MUSCAT_REPO: rism-digital/muscat
   TRANSLATIONS_REPO: rism-digital/translations
 
-  MUSCAT_GUIDELINES_PATH: ''
-  MUSCAT_PATH: ''
-  TRANSLATIONS_PATH: ''
+  MUSCAT_GUIDELINES_PATH: 'muscat-guidelines'
+  MUSCAT_PATH: 'muscat'
+  TRANSLATIONS_PATH: 'translations'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
