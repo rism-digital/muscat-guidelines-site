@@ -50,7 +50,7 @@ jobs:
           repository: ${{ env.TRANSLATIONS_REPO }}
           path: ${{ env.TRANSLATIONS_PATH }}
 
-      # Checks-out your repository under $BUILD_PATH
+      # Checks-out this repository under $BUILD_PATH
       - uses: actions/checkout@v4
         with:
             path: ${{ env.BUILD_PATH }}
