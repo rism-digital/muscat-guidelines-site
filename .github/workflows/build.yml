@@ -8,9 +8,9 @@ on:
 
 # globals
 env:
-  MUSCAT_GUIDELINES_REPO: https://github.com/rism-digital/muscat-guidelines
-  MUSCAT_REPO: https://github.com/rism-digital/muscat
-  TRANSLATIONS_REPO: https://github.com/rism-digital/translations
+  MUSCAT_GUIDELINES_REPO: rism-digital/muscat-guidelines
+  MUSCAT_REPO: rism-digital/muscat
+  TRANSLATIONS_REPO: rism-digital/translations
 
   MUSCAT_GUIDELINES_PATH: ./muscat-guidelines
   MUSCAT_PATH: ./muscat
