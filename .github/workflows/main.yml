@@ -118,7 +118,7 @@ jobs:
         uses: burnett01/rsync-deployments@4.1
         with:
           switches: -avzr --delete --exclude="uploads" --exclude=".well-known" --exclude="wg0.conf"
-          path: _site/
+          path: ${{ env.BUILD_PATH }}/_site/
           remote_path: ${{ env.DEPLOY_PATH }}
           remote_host: ${{ env.DEPLOY_SERVER }}
           remote_user: ${{ secrets.DEPLOY_USER }}
