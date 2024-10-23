@@ -1,4 +1,4 @@
-name: Jekyll build
+name: Main deployment
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main and staging branches
@@ -90,3 +90,41 @@ jobs:
           node _site/assets/js/build_index.js _site/pages.json index.json
           # looks like lemonarc/jekyll-action@1.0.0 runs as root...
           sudo mv index.json ./_site/
+
+      - name: Set server to deployment if on staging branch
+        if: endsWith(github.ref, '/staging')
+        run: |
+          echo "DEPLOY_SERVER=${{ secrets.DEPLOY_STAGING_SERVER }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=${{ secrets.DEPLOY_STAGING_PATH }}" >> $GITHUB_ENV
+
+      - name: Set server to production if on main branch
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "DEPLOY_SERVER=${{ secrets.DEPLOY_PRODUCTION_SERVER }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=${{ secrets.DEPLOY_PRODUCTION_PATH }}" >> $GITHUB_ENV
+
+      - name: Install packages
+        working-directory: ${{ github.workspace }}
+        run: |
+          sudo echo "${{ secrets.VPN_CONFIGURATION }}" > ./wg0.conf
+
+      - name: Set up Wireguard VPN
+        working-directory: ${{ github.workspace }}
+        run: |
+         sudo wg-quick up ./wg0.conf
+
+      # Deploy to remote server
+      - name: Deploy with rsync
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete --exclude="uploads" --exclude=".well-known" --exclude="wg0.conf"
+          path: _site/
+          remote_path: ${{ env.DEPLOY_PATH }}
+          remote_host: ${{ env.DEPLOY_SERVER }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Disconnect VPN
+        working-directory: ${{ github.workspace }}
+        run: |
+          sudo wg-quick down ./wg0.conf
