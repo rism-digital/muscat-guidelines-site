@@ -3,8 +3,8 @@ name: Jekyll build
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main and staging branches
 on:
-  pull_request:
-    branches: [ staging ]
+  push:
+    branches: [ main, staging ]
 
 # globals
 env:
@@ -31,6 +31,10 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '3.1'
+
+      - name: Install packages
+        run: |
+          sudo apt install openresolv wireguard
 
       # Checks-out external repositories
       - uses: actions/checkout@v4
@@ -72,3 +76,17 @@ jobs:
           bundle config path vendor/bundle
           bundle install
           bundle exec jekyll build
+
+      # Install node/lunr and build the index
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          
+      - name: Build the index
+        working-directory: ${{ env.BUILD_PATH }}
+        run: |
+          npm install lunr@2.3.9
+          npm install lunr-languages
+          node _site/assets/js/build_index.js _site/pages.json index.json
+          # looks like lemonarc/jekyll-action@1.0.0 runs as root...
+          sudo mv index.json ./_site/
