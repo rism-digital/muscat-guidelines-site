@@ -104,12 +104,12 @@ jobs:
           echo "DEPLOY_PATH=${{ secrets.DEPLOY_PRODUCTION_PATH }}" >> $GITHUB_ENV
 
       - name: Install packages
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ env.BUILD_PATH }}
         run: |
           sudo echo "${{ secrets.VPN_CONFIGURATION }}" > ./wg0.conf
 
       - name: Set up Wireguard VPN
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ env.BUILD_PATH }}
         run: |
          sudo wg-quick up ./wg0.conf
 
