@@ -1,10 +1,10 @@
-name: Jekyll build
+name: Main deployment
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main and staging branches
 on:
-  pull_request:
-    branches: [ staging ]
+  push:
+    branches: [ main, staging ]
 
 # globals
 env:
@@ -31,6 +31,10 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '3.1'
+
+      - name: Install packages
+        run: |
+          sudo apt install openresolv wireguard
 
       # Checks-out external repositories
       - uses: actions/checkout@v4
@@ -72,3 +76,55 @@ jobs:
           bundle config path vendor/bundle
           bundle install
           bundle exec jekyll build
+
+      # Install node/lunr and build the index
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          
+      - name: Build the index
+        working-directory: ${{ env.BUILD_PATH }}
+        run: |
+          npm install lunr@2.3.9
+          npm install lunr-languages
+          node _site/assets/js/build_index.js _site/pages.json index.json
+          # looks like lemonarc/jekyll-action@1.0.0 runs as root...
+          sudo mv index.json ./_site/
+
+      - name: Set server to deployment if on staging branch
+        if: endsWith(github.ref, '/staging')
+        run: |
+          echo "DEPLOY_SERVER=${{ secrets.DEPLOY_STAGING_SERVER }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=${{ secrets.DEPLOY_STAGING_PATH }}" >> $GITHUB_ENV
+
+      - name: Set server to production if on main branch
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "DEPLOY_SERVER=${{ secrets.DEPLOY_PRODUCTION_SERVER }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=${{ secrets.DEPLOY_PRODUCTION_PATH }}" >> $GITHUB_ENV
+
+      - name: Install packages
+        working-directory: ${{ env.BUILD_PATH }}
+        run: |
+          sudo echo "${{ secrets.VPN_CONFIGURATION }}" > ./wg0.conf
+
+      - name: Set up Wireguard VPN
+        working-directory: ${{ env.BUILD_PATH }}
+        run: |
+         sudo wg-quick up ./wg0.conf
+
+      # Deploy to remote server
+      - name: Deploy with rsync
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete --exclude="uploads" --exclude=".well-known" --exclude="wg0.conf"
+          path: ${{ env.BUILD_PATH }}/_site/
+          remote_path: ${{ env.DEPLOY_PATH }}
+          remote_host: ${{ env.DEPLOY_SERVER }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Disconnect VPN
+        working-directory: ${{ env.BUILD_PATH }}
+        run: |
+          sudo wg-quick down ./wg0.conf
