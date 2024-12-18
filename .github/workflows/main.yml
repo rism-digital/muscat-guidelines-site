@@ -34,7 +34,7 @@ jobs:
 
       - name: Install packages
         run: |
-          sudo apt install openresolv wireguard
+          sudo apt install wireguard
 
       # Checks-out external repositories
       - uses: actions/checkout@v4
