@@ -28,7 +28,7 @@ jobs:
     steps:
 
       - name: "Install ruby"
-        uses: actions/setup-ruby
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
 
