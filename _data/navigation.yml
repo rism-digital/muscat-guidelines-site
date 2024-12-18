@@ -4,6 +4,12 @@
     fr: "Accueil"
   link: /index.html
 - name:
+    en: "Muscat"
+    de: "Muscat"
+    fr: "Muscat"
+  link: https://muscat.rism.info
+  blank: true
+- name:
     en: "RISM Editorial Center"
     de: "RISM Zentralredaktion"
     fr: "RISM Editorial Center"
