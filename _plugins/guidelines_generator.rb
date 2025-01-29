@@ -263,6 +263,15 @@ Jekyll::Hooks.register :site, :after_init do |site|
         FileUtils.mv(File.join(include_dir, File.basename(file)), File.join(include_dir, htmlFilename))
     end
 
+    Jekyll.logger.info "GuidelinesGenerator:", "Copying #{@guidelines_include} files to '_includes' as .html"
+    # _includes dir of the site
+    file = "changes.en.md"
+    FileUtils.cp(File.join(@guidelines_include, file), include_dir)
+
+    Dir.glob("#{@guidelines}/homepage.*.md").each do |file|
+        FileUtils.cp(file, include_dir)
+    end
+
     # Log message to indicate the pre-build hook was triggered
     Jekyll.logger.info "GuidelinesGenerator:", "Files generated in #{@output_dir} during :before_init hook"
 end
