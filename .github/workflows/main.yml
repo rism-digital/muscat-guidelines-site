@@ -28,13 +28,13 @@ jobs:
     steps:
 
       - name: "Install ruby"
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
 
       - name: Install packages
         run: |
-          sudo apt install openresolv wireguard
+          sudo apt install wireguard
 
       # Checks-out external repositories
       - uses: actions/checkout@v4

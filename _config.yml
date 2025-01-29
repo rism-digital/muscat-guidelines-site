@@ -1,4 +1,4 @@
-title: Guidelines
+title: "RISM Cataloging Guidelines"
 wg_title:
 email: contact@rism.info
 description: >- # this means to ignore newlines
@@ -41,5 +41,5 @@ sass:
 
 theme: rism-theme
 
-src_link: https://github.com/rism-digital/muscat-guielines-site/tree/staging
+src_link: https://github.com/rism-digital/muscat-guidelines-site/tree/staging
 
