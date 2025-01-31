@@ -1,5 +1,5 @@
 ---
-layout: guidelines
+layout: index
 menubar: introduction
 permalink: /index.html
 ---
