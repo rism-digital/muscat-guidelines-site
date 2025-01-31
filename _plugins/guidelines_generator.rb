@@ -22,7 +22,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
             when nil 
                 label = I18n.t(@source_config[key.to_sym][:label]) rescue "missing label in source"
             when "institution" 
-                label = I18n.t(@institution_config[key.to_sym][:label]) rescue "missing label in instition"
+                label = I18n.t(@institution_config[key.to_sym][:label]) rescue "missing label in institution"
             when "person" 
                 label = I18n.t(@person_config[key.to_sym][:label]) rescue "missing label in person"
             when "publication" 
@@ -125,7 +125,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
             end
         end
         # Add a navigation link using the custom anchor
-        navigation[:link] = "#{@sidebar[:link]}##{id}"
+        # navigation[:link] = "#{@sidebar[:link]}"
+        navigation[:anchor] = "##{id}"
         # Create an array if this is the first section in the chapter
         @sidebar[:items] = Array.new if !@sidebar[:items]
         # Add the navigation to it
