@@ -5,6 +5,7 @@ name: Main deployment
 on:
   push:
     branches: [ main, staging ]
+  workflow_dispatch:
 
 # globals
 env:

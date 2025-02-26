@@ -19,6 +19,16 @@ $navbar-item-active-color: $rism-editorial-center-white;
 $notification-radius: 3px;
 $notification-padding-ltr: 0.75rem;
 
+$content-heading-color: hsl(0, 0%, 40%);
+$content-heading-weight: 700;
+$title-line-height: 2px;
+
+// Adjusted style for the guidelines h3 and h4
+.content h2, h3, h4 {
+    padding-bottom: 3px !important;
+    border-bottom: 1px solid rgb(210, 210, 210) !important;
+}
+
 .sidenavbar {
     @extend .navbar;
     display: flex;
