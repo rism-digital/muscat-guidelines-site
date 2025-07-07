@@ -31,7 +31,7 @@ sponsors:
   - url: https://www.iaml.info/
     logo: logo_iaml.png
 
-languages: ["en"]
+languages: ["en", "de"]
 default_lang: "en"
 exclude_from_localization: ["assets", "javascript", "images", "css", "README.md"]
 parallel_localization: false
