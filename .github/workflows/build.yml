@@ -9,11 +9,9 @@ on:
 # globals
 env:
   MUSCAT_GUIDELINES_REPO: rism-digital/muscat-guidelines
-  MUSCAT_REPO: rism-digital/muscat
   TRANSLATIONS_REPO: rism-digital/translations
 
   MUSCAT_GUIDELINES_PATH: 'muscat-guidelines'
-  MUSCAT_PATH: 'muscat'
   TRANSLATIONS_PATH: 'translations'
   BUILD_PATH: 'build'
 
@@ -30,26 +28,21 @@ jobs:
       - name: "Install ruby"
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '4.0.5'
 
       # Checks-out external repositories
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: ${{ env.MUSCAT_GUIDELINES_REPO }}
           path: ${{ env.MUSCAT_GUIDELINES_PATH }}
 
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ env.MUSCAT_REPO }}
-          path: ${{ env.MUSCAT_PATH }}
-
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: ${{ env.TRANSLATIONS_REPO }}
           path: ${{ env.TRANSLATIONS_PATH }}
 
       # Checks-out this repository under $BUILD_PATH
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
             path: ${{ env.BUILD_PATH }}
       
@@ -59,16 +52,16 @@ jobs:
         if: endsWith(github.ref, '/staging')
 
       # Use GitHub Actions' cache to shorten build times and decrease load on servers
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: ${{ env.BUILD_PATH }}/vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v3
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-v4
           restore-keys: |
-            ${{ runner.os }}-gems-v3
+            ${{ runner.os }}-gems-v4
 
       - name: "Build the site"
         working-directory: ${{ env.BUILD_PATH }}
         run: |
           bundle config path vendor/bundle
           bundle install
-          bundle exec jekyll build
+          bundle exec ./bin/site build

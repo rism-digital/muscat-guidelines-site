@@ -178,8 +178,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # Where to find the translation files from the translations repository
     @translations = "#{site.config['translations_dir']}/locales"
 
-    # Where to find the configuration files from the muscat repository
-    @muscat_config = "#{site.config['muscat_dir']}/config/editor_profiles/default/configurations/"
+    # Where to find the cached configuration files from the Muscat repository
+    @muscat_config = "#{site.config['muscat_cache_dir']}/config/editor_profiles/default/configurations/"
 
     # Load the configs
     @source_config = load_muscat_config "Source"   
@@ -254,7 +254,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # _includes dir of the site
     include_dir = File.join(site.source, "_includes/common") # Destination _includes folder
     # Make sure the target directory exists
-    Dir.mkdir(include_dir) unless Dir.exists?(include_dir)
+    Dir.mkdir(include_dir) unless Dir.exist?(include_dir)
     # Copy each file from ./common in the guidelines to _includes
     # Also change .md to .html because otherwise jekyll expects a .xx.md include with the corresponding language
     Dir.glob("#{@guidelines_include}/*").each do |file|

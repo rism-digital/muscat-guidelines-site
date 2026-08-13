@@ -1,0 +1,14 @@
+// Configuration consumed by rism-theme's Bulma 1 wrapper.
+$rism-theme: (
+  "primary": #005091,
+  "navbar-background-color": #005091,
+  "navbar-item-color": #fff,
+  "navbar-item-hover-background-color": #0c67a6,
+  "navbar-item-hover-color": #fff,
+  "navbar-item-active-background-color": #004782,
+  "navbar-item-active-color": #fff,
+  "notification-radius": 3px,
+  "notification-padding": 1.375em 0.75rem,
+  "content-heading-color": hsl(0, 0%, 40%),
+  "content-heading-weight": 700,
+);

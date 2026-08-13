@@ -11,7 +11,9 @@ twitter:
 enable_search: true
 
 guidelines_dir: "../muscat-guidelines"
-muscat_dir: "../muscat"
+muscat_repository: "https://github.com/rism-digital/muscat.git"
+# Populated automatically by bin/site before each build; do not change manually.
+muscat_cache_dir: ".cache/muscat"
 translations_dir: "../translations"
 
 defaults:
@@ -42,4 +44,3 @@ sass:
 theme: rism-theme
 
 src_link: https://github.com/rism-digital/muscat-guidelines-site/tree/staging
-
