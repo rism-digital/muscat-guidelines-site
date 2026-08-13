@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repository_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+read_config() {
+  ruby -e 'require "yaml"; puts YAML.load_file(ARGV[0]).fetch(ARGV[1])' "$repository_root/_config.yml" "$1"
+}
+
+muscat_repository="$(read_config muscat_repository)"
+muscat_cache_dir="$(read_config muscat_cache_dir)"
+muscat_directory="$repository_root/$muscat_cache_dir"
+
+label_files=(
+  /config/editor_profiles/default/configurations/SourceLabels.yml
+  /config/editor_profiles/default/configurations/InstitutionLabels.yml
+  /config/editor_profiles/default/configurations/PersonLabels.yml
+  /config/editor_profiles/default/configurations/PublicationLabels.yml
+)
+
+if [[ -e "$muscat_directory" && ! -d "$muscat_directory/.git" ]]; then
+  echo "Expected $muscat_directory to be a Git checkout." >&2
+  exit 1
+fi
+
+if [[ ! -d "$muscat_directory/.git" ]]; then
+  mkdir -p "$(dirname "$muscat_directory")"
+  git clone --depth 1 --filter=blob:none --sparse "$muscat_repository" "$muscat_directory"
+  git -C "$muscat_directory" sparse-checkout set --no-cone "${label_files[@]}"
+else
+  git -C "$muscat_directory" pull --ff-only
+fi
+
+if [[ $# -eq 0 ]]; then
+  set -- build
+fi
+
+exec bundle exec jekyll "$@" \
+  --config "$repository_root/_config.yml"

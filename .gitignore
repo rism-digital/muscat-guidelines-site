@@ -2,6 +2,7 @@ _site/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
+.cache/
 _includes/common
 _data/*.yml
 !_data/navigation.yml

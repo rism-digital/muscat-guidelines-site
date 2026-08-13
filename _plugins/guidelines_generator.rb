@@ -178,8 +178,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # Where to find the translation files from the translations repository
     @translations = "#{site.config['translations_dir']}/locales"
 
-    # Where to find the configuration files from the muscat repository
-    @muscat_config = "#{site.config['muscat_dir']}/config/editor_profiles/default/configurations/"
+    # Where to find the cached configuration files from the Muscat repository
+    @muscat_config = "#{site.config['muscat_cache_dir']}/config/editor_profiles/default/configurations/"
 
     # Load the configs
     @source_config = load_muscat_config "Source"   
