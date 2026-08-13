@@ -2,6 +2,18 @@
 
 This repository is a Jekyll site for publishing the Muscat guidelines. The site uses the [rism-theme](https://github.com/rism-digital/rism-theme) and pulls content from other repositories. 
 
+## Development
+
+Use Ruby 4.0.5 (for example through rbenv or asdf), then install and run the
+locked dependencies with:
+
+```sh
+bundle install
+bundle exec jekyll build
+```
+
+The build expects the sibling repositories described below to be available.
+
 The main content is pulled from the [muscat-guidelines](https://github.com/rism-digital/muscat-guidelines) repository that contains Markdown files in various languages.
 
 Additional translated labels are pulled from the [translations](https://github.com/rism-digital/translations) repository that contains the translated labels used in Muscat. The translated labels are identified by translation keys. The mapping of the keys is given in the configuration files available in the [muscat](https://github.com/rism-digital/muscat) repository.

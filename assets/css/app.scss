@@ -1,0 +1,11 @@
+---
+---
+
+// Override the theme asset so the site's local Sass is compiled alongside
+// rism-theme's Bulma 1 modules.
+@use "rism-theme";
+@use "rism-theme-config";
+@use "rism-bulma";
+@use "bulma-extensions/bulma-collapsible";
+@use "base-styles";
+@use "site-theme";

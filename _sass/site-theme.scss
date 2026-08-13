@@ -1,27 +1,7 @@
-$rism-editorial-center-primary: hsl(207, 100%, 28%); /* equivalent #005091 */
-$rism-editorial-center-highlight: lighten($rism-editorial-center-primary, 20%);
-$rism-editorial-center-white: #fff;
+@use "sass:color";
+@use "rism-theme-config" as config;
 
-// colored navbar
-$navbar-background-color: $rism-editorial-center-primary;
-$navbar-item-color: $rism-editorial-center-white;
-$navbar-item-hover-background-color: lighten($rism-editorial-center-primary, 5%);
-$navbar-item-hover-color: $rism-editorial-center-white;
-$navbar-item-active-background-color: darken($rism-editorial-center-primary, 5%);
-$navbar-item-active-color: $rism-editorial-center-white;
-
-// white navbar
-//$navbar-item-hover-background-color: $rism-editorial-center-primary;
-//$navbar-item-hover-color: $rism-editorial-center-white;
-//$navbar-item-active-background-color: darken($rism-editorial-center-primary, 5%);
-//$navbar-item-active-color: $rism-editorial-center-white;
-
-$notification-radius: 3px;
-$notification-padding-ltr: 0.75rem;
-
-$content-heading-color: hsl(0, 0%, 40%);
-$content-heading-weight: 700;
-$title-line-height: 2px;
+$rism-editorial-center-primary: #005091;
 
 // Adjusted style for the guidelines h3 and h4
 .content h2, h3, h4 {
@@ -30,7 +10,6 @@ $title-line-height: 2px;
 }
 
 .sidenavbar {
-    @extend .navbar;
     display: flex;
     border-bottom: none !important;
     border-radius: 3px;
@@ -69,7 +48,7 @@ $title-line-height: 2px;
     a:hover {
         h1, h2, h3 {
             transition: color 0.2s ease-in-out;
-            color: darken($content-heading-color, 20%);
+            color: color.adjust(config.$content-heading-color, $lightness: -20%);
         }
         .card-image > img {
             transition: filter 0.2s ease-in-out;

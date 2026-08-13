@@ -254,7 +254,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # _includes dir of the site
     include_dir = File.join(site.source, "_includes/common") # Destination _includes folder
     # Make sure the target directory exists
-    Dir.mkdir(include_dir) unless Dir.exists?(include_dir)
+    Dir.mkdir(include_dir) unless Dir.exist?(include_dir)
     # Copy each file from ./common in the guidelines to _includes
     # Also change .md to .html because otherwise jekyll expects a .xx.md include with the corresponding language
     Dir.glob("#{@guidelines_include}/*").each do |file|
