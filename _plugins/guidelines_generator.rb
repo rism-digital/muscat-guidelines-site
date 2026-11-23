@@ -208,7 +208,7 @@ Jekyll::Hooks.register :site, :after_init do |site|
     # permalink: %s
     # menubar: %s
     # ---
-    @header = "---\nlayout: guidelines\ntitle: %s\nlang: %s\npermalink: %s.html\nmenubar: %s\n---\n" 
+    @header = "---\nlayout: guidelines\ntitle: %s\nlang: %s\npermalink: /%s.html\nmenubar: %s\n---\n" 
     
     @chapter = nil
     @sidebar = nil
