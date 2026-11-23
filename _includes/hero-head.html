@@ -1,0 +1,14 @@
+<div class="container">
+    {% if site.src_link %}
+    <div class="is-pulled-left">
+        <a href="{{ site.src_link}}/{{ page.path}}" target="_blank" class="src_link">Code</a>
+    </div>
+    {% endif %}
+    <div class="is-pulled-right">
+        {% comment %}Keep language-switch links exempt from Polyglot's automatic URL localization.{% endcomment %}
+        <a {% if site.active_lang == "en" %}class="disabled"{% endif %} {% static_href %}href="{{ site.baseurl | append: page.permalink }}"{% endstatic_href %}>English</a>
+        {% if site.languages contains 'de' %}|&#160;<a {% if site.active_lang == "de" %}class="disabled"{% endif %} {% static_href %}href="{{ site.baseurl | append: "/de" | append: page.permalink }}"{% endstatic_href %}>Deutsch</a>{% endif %}
+        {% if site.languages contains 'fr' %}|&#160;<a {% if site.active_lang == "fr" %}class="disabled"{% endif %} {% static_href %}href="{{ site.baseurl | append: "/fr" | append: page.permalink }}"{% endstatic_href %}>Français</a>{% endif %}
+        {% if site.languages contains 'it' %}|&#160;<a {% if site.active_lang == "it" %}class="disabled"{% endif %} {% static_href %}href="{{ site.baseurl | append: "/it" | append: page.permalink }}"{% endstatic_href %}>Italiano</a>{% endif %}
+    </div>
+</div>
