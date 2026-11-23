@@ -45,8 +45,8 @@ jobs:
       - uses: actions/checkout@v5
         with:
             path: ${{ env.BUILD_PATH }}
-      
-      - name:
+
+      - name: Update paths for staging
         working-directory: ${{ env.BUILD_PATH }}
         run: sed -i 's/https:\/\/guidelines\.rism\.info/https:\/\/guidelines-stage\.rism\.info/g' _config.yml
         if: endsWith(github.ref, '/staging')

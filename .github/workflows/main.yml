@@ -50,8 +50,8 @@ jobs:
       - uses: actions/checkout@v5
         with:
             path: ${{ env.BUILD_PATH }}
-      
-      - name:
+
+      - name: Update paths for staging
         working-directory: ${{ env.BUILD_PATH }}
         run: sed -i 's/https:\/\/guidelines\.rism\.info/https:\/\/guidelines-stage\.rism\.info/g' _config.yml
         if: endsWith(github.ref, '/staging')
@@ -75,7 +75,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
-          
+
       - name: Build the index
         working-directory: ${{ env.BUILD_PATH }}
         run: |
@@ -97,15 +97,17 @@ jobs:
           echo "DEPLOY_SERVER=${{ secrets.DEPLOY_PRODUCTION_SERVER }}" >> $GITHUB_ENV
           echo "DEPLOY_PATH=${{ secrets.DEPLOY_PRODUCTION_PATH }}" >> $GITHUB_ENV
 
-      - name: Install packages
-        working-directory: ${{ env.BUILD_PATH }}
+      - name: Write WireGuard config
+        env:
+          VPN_CONFIGURATION: ${{ secrets.VPN_CONFIGURATION }}
         run: |
-          sudo echo "${{ secrets.VPN_CONFIGURATION }}" > ./wg0.conf
+          sudo install -d -m 700 /etc/wireguard
+          sudo install -m 600 /dev/null /etc/wireguard/wg0.conf
+          printf '%s\n' "$VPN_CONFIGURATION" | sudo tee /etc/wireguard/wg0.conf > /dev/null
 
-      - name: Set up Wireguard VPN
-        working-directory: ${{ env.BUILD_PATH }}
-        run: |
-         sudo wg-quick up ./wg0.conf
+      - name: Set up WireGuard VPN
+        id: vpn
+        run: sudo wg-quick up wg0
 
       # Deploy to remote server
       - name: Deploy with rsync
@@ -119,6 +121,5 @@ jobs:
           remote_key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Disconnect VPN
-        working-directory: ${{ env.BUILD_PATH }}
-        run: |
-          sudo wg-quick down ./wg0.conf
+        if: ${{ always() && steps.vpn.outcome == 'success' }}
+        run: sudo wg-quick down wg0
